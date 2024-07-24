@@ -1,0 +1,4 @@
+requests
+Django
+beautifulsoup4
+aiohttp
