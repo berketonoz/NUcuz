@@ -1,0 +1,90 @@
+{
+    "products": [
+        {
+            "brand": "Razer",
+            "name": "Viper",
+            "model": "V3 Pro",
+            "category": "Gaming Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Viper",
+            "model": "Mini Signature Edition",
+            "category": "Gaming Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "DeathAdder",
+            "model": "V3 Pro",
+            "category": "Gaming Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Cobra",
+            "model": "Pro",
+            "category": "Gaming Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Basilisk",
+            "model": "V3 Pro",
+            "category": "Gaming Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "BlackWidow",
+            "model": "V4 Pro",
+            "category": "Keyboard",
+            "wireless": false
+        },
+        {
+            "brand": "Razer",
+            "name": "BlackWidow",
+            "model": "V4",
+            "category": "Keyboard",
+            "wireless": false
+        },
+        {
+            "brand": "Razer",
+            "name": "BlackWidow",
+            "model": "V3",
+            "category": "Keyboard",
+            "wireless": false
+        },
+        {
+            "brand": "Razer",
+            "name": "Blade",
+            "model": "14",
+            "category": "Laptop"
+        },
+        {
+            "brand": "Razer",
+            "name": "Blade",
+            "model": "15",
+            "category": "Laptop"
+        },
+        {
+            "brand": "Razer",
+            "name": "Blade",
+            "model": "16",
+            "category": "Laptop"
+        },
+        {
+            "brand": "Razer",
+            "name": "Blade",
+            "model": "17",
+            "category": "Laptop"
+        },
+        {
+            "brand": "Razer",
+            "name": "Blade",
+            "model": "18",
+            "category": "Laptop"
+        }
+    ]
+}
