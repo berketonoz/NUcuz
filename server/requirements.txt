@@ -2,3 +2,5 @@ requests
 Django
 beautifulsoup4
 aiohttp
+gunicorn
+pymongo
