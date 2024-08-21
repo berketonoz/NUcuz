@@ -11,4 +11,8 @@ RUN npm install
 
 EXPOSE 3030
 
+COPY ./key.json /usr/src/app/service-account-key.json
+
+ENV GOOGLE_APPLICATION_CREDENTIALS=/usr/src/app/service-account-key.json
+
 CMD [ "node", "app.js" ]

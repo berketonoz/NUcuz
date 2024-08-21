@@ -2,43 +2,36 @@
     "products": [
         {
             "brand": "Razer",
-            "name": "Viper",
-            "model": "V3 Pro",
-            "category": "Gaming Mouse",
-            "wireless": true
-        },
-        {
-            "brand": "Razer",
-            "name": "Viper",
-            "model": "Mini Signature Edition",
-            "category": "Gaming Mouse",
-            "wireless": true
-        },
-        {
-            "brand": "Razer",
-            "name": "DeathAdder",
-            "model": "V3 Pro",
-            "category": "Gaming Mouse",
-            "wireless": true
-        },
-        {
-            "brand": "Razer",
-            "name": "Cobra",
-            "model": "Pro",
-            "category": "Gaming Mouse",
+            "name": "Basilisk",
+            "model": "V3",
+            "category": "Mouse",
             "wireless": true
         },
         {
             "brand": "Razer",
             "name": "Basilisk",
             "model": "V3 Pro",
-            "category": "Gaming Mouse",
+            "category": "Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "BlackShark",
+            "model": "V2",
+            "category": "Headset",
+            "wireless": false
+        },
+        {
+            "brand": "Razer",
+            "name": "BlackShark",
+            "model": "V2 Pro",
+            "category": "Headset",
             "wireless": true
         },
         {
             "brand": "Razer",
             "name": "BlackWidow",
-            "model": "V4 Pro",
+            "model": "V3",
             "category": "Keyboard",
             "wireless": false
         },
@@ -52,7 +45,7 @@
         {
             "brand": "Razer",
             "name": "BlackWidow",
-            "model": "V3",
+            "model": "V4 Pro",
             "category": "Keyboard",
             "wireless": false
         },
@@ -85,6 +78,55 @@
             "name": "Blade",
             "model": "18",
             "category": "Laptop"
+        },
+        {
+            "brand": "Razer",
+            "name": "Cobra",
+            "model": "Pro",
+            "category": "Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "DeathAdder",
+            "model": "Essential",
+            "category": "Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "DeathAdder",
+            "model": "V3 Pro",
+            "category": "Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Huntsman",
+            "model": "Mini",
+            "category": "Keyboard",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Viper",
+            "model": "V3 Pro",
+            "category": "Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Viper",
+            "model": "Mini Signature Edition",
+            "category": "Mouse",
+            "wireless": true
+        },
+        {
+            "brand": "Razer",
+            "name": "Wolverine",
+            "model": "V2",
+            "category": "Controller",
+            "wireless": true
         }
     ]
 }
