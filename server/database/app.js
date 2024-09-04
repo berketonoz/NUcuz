@@ -108,7 +108,7 @@ app.get("/products", async (req, res) => {
       );
       response.status = 200;
     }
-    console.log(response);
+    // console.log(response);
 
     res.status(200).json(response);
   } catch (error) {
