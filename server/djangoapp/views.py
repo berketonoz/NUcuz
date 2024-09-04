@@ -1,5 +1,6 @@
 import json
 import logging
+import threading
 from django.http import JsonResponse
 from djangoproj.settings import DOMAINS
 import requests
@@ -40,8 +41,9 @@ def handle_api_request(url, headers):
         logger.error(f"Error fetching data from {url}: {e}")
         return []
 
-def fetch_paginated_data(domain, query):
+def fetch_paginated_data(query):
     products = []
+    domain = "amazon"
     template_url, headers = get_domain_request_details(domain)
 
     for tld in DOMAINS[domain]['TLDs']:
@@ -65,36 +67,39 @@ def fetch_paginated_data(domain, query):
 
             logger.debug(f'Page({page}): {len(fetched_products)} products fetched')
             page += 1
+            # For Debug purposes
+            if page == 2:
+                return products
             
     logger.info(f'Total number of products fetched: {len(products)}')
     return products
 
 
 def publish_to_bigquery(data):
-    url = "http://localhost:3030/products"
-    headers = {'Content-Type': 'application/json'}
     try:
+        url = "http://localhost:3030/load_amazon"
+        headers = {'Content-Type': 'application/json'}
         response = requests.post(url, data=json.dumps(data), headers=headers)
         response.raise_for_status()  # Raises HTTPError for bad responses
         logger.info("Data published successfully to BigQuery")
-        return response.json()
     except requests.exceptions.HTTPError as http_err:
         logger.error(f"HTTP error occurred: {http_err}")
     except requests.exceptions.RequestException as req_err:
         logger.error(f"Error publishing to BigQuery: {req_err}")
-    return None
 
 
-def fetch_amazon_products(request):
-    domain = "amazon"
-    queries = []
-    query = request.GET.get('search', 'versace')  # Fallback to a default query if not provided
 
-    logger.info(f"Search query: {query}")
+def load_amazon_products(request):
+    queries = ["razer", "msi", "asus", "lenovo"]
+    data = []
+
+    for query in queries:
+        data += fetch_paginated_data(query)
     
-    data = fetch_paginated_data(domain, query)
-    if data:
-        publish_to_bigquery(data)
-        return JsonResponse({'status': 200, 'products': data})
-    else:
-        return JsonResponse({'status': 500, 'error': 'Failed to fetch or publish products'})
+        if data:
+            # Run publish_to_bigquery in a separate thread
+            threading.Thread(target=publish_to_bigquery, args=(data,)).start()
+        else:
+            return JsonResponse({'status': 500, 'error': 'Failed to fetch products'})
+    return JsonResponse({'status': 200, 'products': data})
+
