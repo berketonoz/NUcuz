@@ -1,54 +1,75 @@
 /* Products.css */
 
 .card {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 16px;
-    margin: 16px;
-    width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-  }
-  
-  .card img {
-    width: 100%;
-    height: auto;
-    border-radius: 5px 5px 0 0;
-  }
-  
-  .card-content {
-    padding: 16px;
-  }
-  
-  .card-title {
-    font-size: 1.25em;
-    margin-bottom: 0.5em;
-  }
-  
-  .card-price {
-    color: #ff5722;
-    font-weight: bold;
-    margin-bottom: 0.5em;
-  }
-  
-  .card-description {
-    color: #777;
-    margin-bottom: 0.5em;
-  }
-  
-  .card-link {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-  }
-  
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 16px;
+  margin: 16px;
+  width: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px 5px 0 0;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+.card-price {
+  color: #ff5722;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+
+.card-description {
+  color: #777;
+  margin-bottom: 0.5em;
+}
+
+.card-link {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.search-container{
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+}
+
+.search-bar {
+  font-size: 30px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;  
+}
+
+.container-ver{
+  display: flex;
+}
+
+.container-hor{
+  display: flex;
+  flex-direction: column;
+}
