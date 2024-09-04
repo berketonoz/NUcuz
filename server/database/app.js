@@ -89,10 +89,26 @@ app.get("/", async (req, res) => {
 
 app.get("/products", async (req, res) => {
   try {
-    const sql = "SELECT * FROM `codeway-case-study-427613.amazon.products`";
+    let response = {
+      status: "",
+      products: "",
+    };
+    let sql =
+      "SELECT * \
+            FROM `codeway-case-study-427613.amazon.products` \
+            ORDER BY RAND() \
+            "; //LIMIT 16";
+
     const options = { query: sql, location: "US" };
 
-    const [response] = await bigqueryClient.query(options);
+    const [bqResponse] = await bigqueryClient.query(options);
+    if (bqResponse.length > 0) {
+      response.products = bqResponse.sort((p1, p2) =>
+        p1.asin > p2.asin ? 0 : 1
+      );
+      response.status = 200;
+    }
+    console.log(response);
 
     res.status(200).json(response);
   } catch (error) {
@@ -103,8 +119,28 @@ app.get("/products", async (req, res) => {
   }
 });
 
-// Endpoint to publish data to Pub/Sub
 app.post("/products", async (req, res) => {
+  try {
+    let sql = "";
+    if (req.body) console.log(req.body);
+
+    console.log("SQL: ", sql);
+
+    const options = { query: sql, location: "US" };
+
+    // const [response] = await bigqueryClient.query(options);
+
+    res.status(200).json(sql);
+  } catch (error) {
+    console.error("Error fetching documents:", error); // Log the full error
+    res
+      .status(500)
+      .json({ error: "Error fetching documents", details: error.message });
+  }
+});
+
+// Endpoint to publish data to Pub/Sub
+app.post("/load_amazon", async (req, res) => {
   const topicName = "projects/codeway-case-study-427613/topics/amazon";
 
   try {
