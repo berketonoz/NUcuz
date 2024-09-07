@@ -97,7 +97,7 @@ app.get("/products", async (req, res) => {
       "SELECT * \
             FROM `codeway-case-study-427613.amazon.products` \
             ORDER BY RAND() \
-            "; //LIMIT 16";
+            LIMIT 4";
 
     const options = { query: sql, location: "US" };
 

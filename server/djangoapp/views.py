@@ -45,9 +45,8 @@ def fetch_paginated_data(query):
     products = []
     domain = "amazon"
     template_url, headers = get_domain_request_details(domain)
-
     for tld in DOMAINS[domain]['TLDs']:
-        logger.info(f"Fetching products from {domain}.{tld}...")
+        logger.info(f"Fetching {query} products from {domain}.{tld}...")
         page = 1
         
         num_of_products = 0
@@ -62,14 +61,15 @@ def fetch_paginated_data(query):
                 break
             
             for product in fetched_products:
-                product['country'] = tld
-                products.append(product)
+                if product['product_price'] and product['currency']:
+                    product['country'] = tld
+                    products.append(product)
 
             logger.debug(f'Page({page}): {len(fetched_products)} products fetched')
             page += 1
-            # For Debug purposes
+            # For Test purposes (Not to overload bq initially)
             if page == 2:
-                return products
+                break
             
     logger.info(f'Total number of products fetched: {len(products)}')
     return products
@@ -95,11 +95,10 @@ def load_amazon_products(request):
 
     for query in queries:
         data += fetch_paginated_data(query)
-    
-        if data:
-            # Run publish_to_bigquery in a separate thread
-            threading.Thread(target=publish_to_bigquery, args=(data,)).start()
-        else:
-            return JsonResponse({'status': 500, 'error': 'Failed to fetch products'})
+
+    if data:
+        threading.Thread(target=publish_to_bigquery, args=(data,)).start()
+    else:
+        return JsonResponse({'status': 500, 'error': 'Failed to fetch products'})
     return JsonResponse({'status': 200, 'products': data})
 
