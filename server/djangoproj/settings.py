@@ -130,7 +130,7 @@ STATICFILES_DIRS = [
 # GLOBAL DICTIONARY
 DOMAINS = {
         'amazon': {
-            'TLDs': ['US', 'AU', 'BR', 'CA', 'CN', 'FR', 'DE', 'IN', 'IT', 'MX', 'NL', 'SG', 'ES', 'TR', 'AE', 'GB', 'JP', 'SA', 'PL', 'SE', 'BE', 'EG'],
+            'TLDs': ['US', 'TR'],  # ['US', 'AU', 'BR', 'CA', 'CN', 'FR', 'DE', 'IN', 'IT', 'MX', 'NL', 'SG', 'ES', 'TR', 'AE', 'GB', 'JP', 'SA', 'PL', 'SE', 'BE', 'EG'],
             'url': 'https://real-time-amazon-data.p.rapidapi.com/search?query=$QUERY&page=$PAGE&country=$COUNTRY&sort_by=RELEVANCE&product_condition=ALL',
             'headers': {
                 'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
