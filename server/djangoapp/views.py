@@ -1,9 +1,13 @@
 import json
 import logging
 import threading
+import requests
 from django.http import JsonResponse
 from djangoproj.settings import DOMAINS
-import requests
+from django.contrib.auth.models import User
+from django.contrib.auth import logout
+from django.contrib.auth import login, authenticate
+from django.views.decorators.csrf import csrf_exempt
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 # razer = 6590   -> 5551
@@ -19,6 +23,71 @@ logging.basicConfig(
     level=logging.INFO,  # Set to DEBUG to capture more detailed logs
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
+
+
+@csrf_exempt  # Only use this if you're testing API requests and not using CSRF tokens for now
+def login_view(request):
+    if request.method == 'POST':
+        # Extract username and password from the request
+        data = json.loads(request.body)
+        username = data.get('userName')
+        password = data.get('password')
+
+        # Authenticate the user
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Log the user in if authentication is successful
+            login(request, user)
+            return JsonResponse({"status": "Authenticated", "userName": user.username})
+        else:
+            # If authentication fails
+            return JsonResponse({"status": "Failed", "message": "Invalid credentials"}, status=401)
+    
+    return JsonResponse({"status": "Failed", "message": "Invalid request method"}, status=405)
+
+
+def logout_request(request):
+    """logout_request function for handling /logout route"""
+    logout(request)
+    data = {"userName": ""}
+    return JsonResponse(data)
+
+
+@csrf_exempt
+def registration(request):
+    """registration function for handling /register route"""
+    # context = {}
+    data = json.loads(request.body)
+    username = data['userName']
+    password = data['password']
+    first_name = data['firstName']
+    last_name = data['lastName']
+    email = data['email']
+    username_exist = False
+    # email_exist = False
+    try:
+        # Check if user already exists
+        User.objects.get(username=username)
+        username_exist = True
+    except User.DoesNotExist as e:
+        # Handle the case when user does not exist, e.g., show an error message or create a user
+        print("User does not exist: ", e)
+    # If it is a new user
+    if not username_exist:
+        # Create user in auth_user table
+        user = User.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            password=password,
+            email=email)
+        # Login the user and redirect to list page
+        login(request, user)
+        data = {"userName": username, "status": "Authenticated"}
+    else:
+        data = {"userName": username, "error": "Already Registered"}
+    return JsonResponse(data)
 
 
 def get_domain_request_details(domain):
@@ -40,6 +109,7 @@ def handle_api_request(url, headers):
     except requests.exceptions.RequestException as e:
         logger.error(f"Error fetching data from {url}: {e}")
         return []
+
 
 def fetch_paginated_data(query):
     products = []

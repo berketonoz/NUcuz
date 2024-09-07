@@ -10,7 +10,9 @@ urlpatterns = [
     # Home Route
     path('', TemplateView.as_view(template_name="index.html")),
     
-    #Products Route
-    path('products/', TemplateView.as_view(template_name="index.html"))
+    #Routes
+    path('products/', TemplateView.as_view(template_name="index.html")),
+    path('login/', TemplateView.as_view(template_name="index.html")),
+    path('register/', TemplateView.as_view(template_name="index.html"))
 
 ]
