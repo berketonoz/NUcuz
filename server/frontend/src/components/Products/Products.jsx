@@ -5,8 +5,19 @@ const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsList, setProductsList] = useState([]);
   const [error, setError] = useState(null);
+  const [currencies, setCurrencies] = useState([]);
 
   const products_url = "http://localhost:3030/products"; // "http://localhost:8000/djangoapp/load_amazon"; // Adjust the URL if needed
+
+  const toggle = (e) => {
+    let e1 = document.getElementsByClassName("arrow");
+    e1 = e1[0];
+    e1.classList.toggle("active");
+    e1.style.transition = "transform 0.2s ease";
+    if (e1.classList.contains("active")) e1.style.transform = "rotate(45deg)";
+    else e1.style.transform = "rotate(-45deg)";
+    console.log(currencies);
+  };
 
   const getProducts = async () => {
     try {
@@ -15,6 +26,12 @@ const Products = () => {
         .then((response) => response.json())
         .then((data) => {
           if (data.status === 200) {
+            let currencies = Array.from(
+              new Set(data.products.map((product) => product.currency))
+            );
+            console.log(currencies);
+            setCurrencies(currencies);
+
             setProductsList(data.products);
             setFilteredProducts(data.products);
           } else {
@@ -50,7 +67,24 @@ const Products = () => {
       {error && <div className="error">{error}</div>}
       <div className="container-ver">
         <div className="container-hor">
-          <div className="filter-container">Filter</div>
+          <div className="filter-container">
+            Filters
+            <div className="filter-item-bar">
+              <div className="filter-item" onClick={(e) => toggle(e)}>
+                Currency
+                <div className="arrow"></div>
+              </div>
+              <div className="filter-currency">
+                {currencies?.length > 0
+                  ? currencies.map((currency, index) => (
+                      <p key={currency} style={{ fontSize: "30px" }}>
+                        {currency}
+                      </p>
+                    ))
+                  : null}
+              </div>
+            </div>
+          </div>
         </div>
         <div className="container-hor">
           <div className="search-container">

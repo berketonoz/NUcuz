@@ -14,16 +14,15 @@ function SearchPage() {
 
   return (
     <div className="container">
-      <div className="search-bar">
         <input
           placeholder="Type a product"
           id="search"
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          className="search-bar"
         />
-        <button onClick={handleSearch}>Search</button>
-      </div>
+        <button onClick={handleSearch} className="search-btn">Search</button>
     </div>
   );
 }
