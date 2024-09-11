@@ -14,5 +14,10 @@ urlpatterns = [
     path(route='login', view=views.login_view, name='login'),
     # path for register
     path(route='register', view=views.registration, name='register'),
+    # path for products
+    path(route='products', view=views.get_products, name='get_products'),
+    # path for detailed product
+    path(route='product/<str:asin>', view=views.get_product, name='get_product'),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
