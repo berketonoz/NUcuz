@@ -8,15 +8,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.contrib.auth import login, authenticate
 from django.views.decorators.csrf import csrf_exempt
+from .restapis import get_request
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
-# razer = 6590   -> 5551
-# msi = 6649     -> 6029
-# asus = 6624    -> 6051
-# lenovo = 6692  -> 6012
-# iphone = 6298  -> 4554
-# samsung = 6629 -> 6183
-# versace = 6434 -> 5495
 
 # Set up logging
 logging.basicConfig(
@@ -134,6 +128,7 @@ def fetch_paginated_data(query):
                 if product['product_price'] and product['currency']:
                     product['country'] = tld
                     products.append(product)
+            print(fetched_products)
 
             logger.debug(f'Page({page}): {len(fetched_products)} products fetched')
             page += 1
@@ -158,7 +153,6 @@ def publish_to_bigquery(data):
         logger.error(f"Error publishing to BigQuery: {req_err}")
 
 
-
 def load_amazon_products(request):
     queries = ["razer", "msi", "asus", "lenovo"]
     data = []
@@ -171,4 +165,18 @@ def load_amazon_products(request):
     else:
         return JsonResponse({'status': 500, 'error': 'Failed to fetch products'})
     return JsonResponse({'status': 200, 'products': data})
+
+
+def get_products(request):
+    endpoint = "/products"
+    products = get_request(endpoint)["products"]
+    return JsonResponse({'status': 200, 'products': products})
+
+
+def get_product(request, asin):
+    if asin:
+        endpoint = "/product/" + str(asin)
+        product = get_request(endpoint)
+        return JsonResponse({'status': 200, 'product': product})
+    return JsonResponse({'status': 500, 'error': 'assin error'})
 

@@ -87,6 +87,20 @@ app.get("/", async (req, res) => {
   res.send("Welcome to the Express API");
 });
 
+app.get("/product/:asin", async (req, res) => {  
+  const asin = req.params.asin;
+  
+  let sql =
+      "SELECT * \
+        FROM `codeway-case-study-427613.amazon.products` \
+        WHERE asin = " + `'${asin}'`;
+
+  const options = { query: sql, location: "US" };
+  const [response] = await bigqueryClient.query(options);
+  
+  res.json(response);
+});
+
 app.get("/products", async (req, res) => {
   try {
     let response = {
@@ -95,20 +109,19 @@ app.get("/products", async (req, res) => {
     };
     let sql =
       "SELECT * \
-            FROM `codeway-case-study-427613.amazon.products` \
-            ORDER BY RAND() \
-            LIMIT 4";
+        FROM `codeway-case-study-427613.amazon.products` \
+        ORDER BY RAND() \
+        LIMIT 4";
 
     const options = { query: sql, location: "US" };
 
     const [bqResponse] = await bigqueryClient.query(options);
-    if (bqResponse.length > 0) {
-      response.products = bqResponse.sort((p1, p2) =>
-        p1.asin > p2.asin ? 0 : 1
-      );
-      response.status = 200;
-    }
-    // console.log(response);
+    // if (bqResponse.length > 0) {
+    //   response.products = bqResponse.sort((p1, p2) =>
+    //     p1.asin > p2.asin ? 0 : 1
+    //   );
+    //   response.status = 200;
+    // }
 
     res.status(200).json(response);
   } catch (error) {
@@ -126,7 +139,7 @@ app.post("/products", async (req, res) => {
 
     console.log("SQL: ", sql);
 
-    const options = { query: sql, location: "US" };
+    // const options = { query: sql, location: "US" };
 
     // const [response] = await bigqueryClient.query(options);
 
