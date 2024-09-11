@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "./Products.css";
 
 const Products = () => {
@@ -7,7 +8,7 @@ const Products = () => {
   const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
 
-  const products_url = "http://localhost:3030/products"; // "http://localhost:8000/djangoapp/load_amazon"; // Adjust the URL if needed
+  const products_url = "http://localhost:8000/djangoapp/products"; // "http://localhost:8000/djangoapp/load_amazon"; // Adjust the URL if needed
 
   const toggle = (e) => {
     let e1 = document.getElementsByClassName("arrow");
@@ -97,7 +98,9 @@ const Products = () => {
           <div className="cards-container">
             {filteredProducts.map((product, index) => (
               <div key={`${product.asin}-${index}`} className="card">
+              <Link to={`/product/${product.asin}`}>
                 <img src={product.product_photo} alt={product.product_title} />
+              </Link>
                 <div className="card-content">
                   <p className="card-asin">{product.asin}</p>
                   <h3 className="card-title">{product.product_title}</h3>
