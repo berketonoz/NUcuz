@@ -51,37 +51,6 @@ const expectedAttributes = [
   "country",
 ];
 
-const extractPrice = (priceString) => {
-  if (priceString) {
-    const numericString = priceString.replace(/[^\d.,]/g, "");
-    const formattedString = numericString.replace(",", ".");
-
-    const price = parseFloat(formattedString);
-    return isNaN(price) ? null : price;
-  }
-  return null;
-};
-
-const filterProductData = (product) => {
-  const filteredProduct = {};
-  expectedAttributes.forEach((attr) => {
-    if (product.hasOwnProperty(attr)) {
-      filteredProduct[attr] = product[attr];
-    }
-  });
-
-  // Extract and clean up price-related fields
-  filteredProduct.product_price = extractPrice(filteredProduct.product_price);
-  filteredProduct.product_original_price = extractPrice(
-    filteredProduct.product_original_price
-  );
-  filteredProduct.product_minimum_offer_price = extractPrice(
-    filteredProduct.product_minimum_offer_price
-  );
-
-  return filteredProduct;
-};
-
 // Express route to home
 app.get("/", async (req, res) => {
   res.send("Welcome to the Express API");
@@ -109,20 +78,19 @@ app.get("/products", async (req, res) => {
     };
     let sql =
       "SELECT * \
-        FROM `codeway-case-study-427613.amazon.products` \
+        FROM `codeway-case-study-427613.amazon.productsV2` \
         ORDER BY RAND() \
         LIMIT 4";
 
     const options = { query: sql, location: "US" };
 
     const [bqResponse] = await bigqueryClient.query(options);
-    // if (bqResponse.length > 0) {
-    //   response.products = bqResponse.sort((p1, p2) =>
-    //     p1.asin > p2.asin ? 0 : 1
-    //   );
-    //   response.status = 200;
-    // }
 
+    if (bqResponse.length > 0) {
+      response.products = bqResponse;
+      response.status = 200;
+    }
+    
     res.status(200).json(response);
   } catch (error) {
     console.error("Error fetching documents:", error); // Log the full error
@@ -158,15 +126,13 @@ app.post("/load_amazon", async (req, res) => {
 
   try {
     const products = req.body;
-    for (const product of products) {
-      const filteredProduct = filterProductData(product);
-
-      const dataBuffer = Buffer.from(JSON.stringify(filteredProduct));
+    for (const product of products) {  
+      const dataBuffer = Buffer.from(JSON.stringify(product));
       const messageId = await pubSubClient
         .topic(topicName)
         .publishMessage({ data: dataBuffer });
       console.log(
-        `Message ${messageId} published for product ${filteredProduct.asin}`
+        `Message ${messageId} published for product ${product.asin}`
       );
     }
 
