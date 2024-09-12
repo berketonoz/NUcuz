@@ -117,18 +117,14 @@ def fetch_paginated_data(query):
         while True:
             formatted_url = format_url_with_query(template_url, query, page, tld)
             fetched_products = handle_api_request(formatted_url, headers)
-            num_of_products += len(fetched_products)
-            # print(f'Page({page}): Fetched {num_of_products} number of products', end='\r')
 
             if not fetched_products:
-                logger.info(f'Fetched {num_of_products} from {tld}, stopping.')
                 break
             
             for product in fetched_products:
-                if product['product_price'] and product['currency']:
+                if product['product_title'] and product['product_price'] and product['currency']:
                     product['country'] = tld
                     products.append(product)
-            print(fetched_products)
 
             logger.debug(f'Page({page}): {len(fetched_products)} products fetched')
             page += 1
