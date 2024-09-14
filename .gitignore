@@ -3,3 +3,5 @@ db.sqlite3
 *pycache*
 *node_modules*
 *package-lock*
+*key.json*
+*DS_Store*
