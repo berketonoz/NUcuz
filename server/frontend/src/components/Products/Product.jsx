@@ -12,14 +12,23 @@ const Product = () => {
   let params = useParams();
   let asin = params.asin;
   let product_url = root_url + "djangoapp/product/" + asin;
+  let review_url = root_url + "djangoapp/reviews";
 
-  const GetProduct = () => {
-    fetch(product_url, { method: "GET" })
+  const GetProduct = async () => {
+    let p = await fetch(product_url, { method: "GET" })
       .then((data) => data.json())
       .then((res) => {
         let product = res.product[0];
         setProduct(product);
-        console.log(product);
+        return product;
+      });
+
+    fetch(review_url + `?asin=${p.asin}&country=${p.country}`, { method: "GET" })
+      .then((data) => data.json())
+      .then((res) => {
+        let reviews = res.data;
+        setReviews(reviews);
+        return reviews;
       });
   };
 
@@ -30,9 +39,26 @@ const Product = () => {
   return (
     <>
       <div className="product-container">
+        <img src={product.product_photo} alt="" className="product-photo" />
+        <div className="product-brand">{product.product_brand}</div>
         <div className="product-title">{product.product_title}</div>
-        <img src={product.product_photo} alt="" className="product-image" />
-        <div className="product-price">{product.product_price}</div>
+        {product.product_price && (
+          <div className="product-price">{product.product_price}</div>
+        )}
+        {product.product_original_price && (
+          <div className="product-price">{product.product_original_price}</div>
+        )}
+        <div className="product-rating">
+          {/* <span className="stars">*****</span> */}
+          <div>
+            <span className="rating">{product.product_star_rating} </span>
+            out of 5
+          </div>
+          <div>({product.product_num_ratings} ratings)</div>
+        </div>
+        <div className="delivery-info">
+          <span>{product.delivery}</span>
+        </div>
       </div>
     </>
   );
