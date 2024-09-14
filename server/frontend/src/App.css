@@ -5,11 +5,143 @@
   .search-btn {
     font-size: 50px;
   } */
-   #root{
-    width: 100%;
-    height: 100%;
-    /* display: flex;
+html {
+  width: 100%;
+  height: 100%;
+  /* display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center; */
-   }
+}
+
+/* reset.css */
+
+/* Remove default margin, padding, and box-sizing */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Remove default styles on HTML5 elements */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+video {
+  display: inline-block;
+}
+
+/* Reset form elements */
+button,
+input,
+optgroup,
+select,
+textarea {
+  margin: 0;
+  font: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+textarea {
+  resize: vertical;
+}
+
+input {
+  line-height: normal;
+}
+
+select {
+  text-transform: none;
+}
+
+/* Remove bullets from lists */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Normalize heading fonts */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+  font-weight: normal;
+}
+
+/* Reset hyperlink appearance */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Reset images */
+img {
+  border: 0;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Reset table properties */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Reset quotes and citations */
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: '';
+}
+
+/* Reset fieldset and legend */
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+
+legend {
+  display: none;
+}
+
+/* Reset HTML5 hidden attribute */
+[hidden] {
+  display: none;
+}
+
+.main-container {
+  width: 100%;
+  height: 100%;
+  background-color: lightblue;
+}

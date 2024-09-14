@@ -1,5 +1,6 @@
-/venv
+*myEnv*
 db.sqlite3
 *pycache*
 *node_modules*
 *package-lock*
+*key.json*
