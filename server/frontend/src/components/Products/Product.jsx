@@ -45,11 +45,13 @@ const Product = () => {
           </div>
           <div>({product?.product_num_ratings} ratings)</div>
         </div>
-        <div className="delivery-info">
-          <span>{product?.delivery}</span>
-        </div>
+        {product.delivery && (
+          <div className="delivery-info">
+            <span>{product?.delivery}</span>
+          </div>
+        )}
+        <Reviews product={product} /> {/* Pass the correct product object */}
       </div>
-      <Reviews product={product} /> {/* Pass the correct product object */}
     </>
   );
 };

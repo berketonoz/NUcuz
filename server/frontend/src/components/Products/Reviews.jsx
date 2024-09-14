@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import "./Reviews.css";
 
 const Reviews = ({ product }) => {
   const [reviews, setReviews] = useState([]);
@@ -18,7 +19,7 @@ const Reviews = ({ product }) => {
       const data = await response.json();
       setReviews(data.data || []);
       console.log(data);
-      
+
       setLoading(false); // Stop loading once reviews are fetched
     } catch (error) {
       console.error("Error fetching reviews:", error);
@@ -31,34 +32,40 @@ const Reviews = ({ product }) => {
     }
   }, [product]); // Re-fetch reviews whenever the product changes
 
-  if (loading) return <div>Loading reviews...</div>; // Display loading state for reviews
-  else
-    console.log(reviews);
-    
+  if (loading)
+    return <div>Loading reviews...</div>; // Display loading state for reviews
+  else console.log(reviews);
 
   return (
     <>
-    <div className="review-section">
-    <h2>Customer Reviews</h2>
+      <div className="review-section">
+        <h2>Customer Reviews</h2>
 
-    {reviews.map((review) => (
-        <div key={review.review_id} className="review">
+        {reviews.map((review) => (
+          <div key={review.review_id} className="review">
             <div className="review-author-avatar">
-                <img src={review.review_author_avatar} alt="" />
+              <img src={review.review_author_avatar} alt="" />
             </div>
             <div className="review-content">
-                <div className="review-title">{review.review_title}</div>
-                <div className="review-star-rating">{review.review_star_rating}</div>
-                <p className="review-comment">{review.review_comment}</p>
-                <div className="review-author">{review.review_author}</div>
-                <div className="review-date">{review.review_date}</div>
-                <span className="verified-purchase">{review.is_verified_purchase}</span>
-                <a href={review.review_link} className="review-link">Read full review</a>
+              <div className="review-title">{review.review_title}</div>
+              <div className="review-star-rating">
+                {review.review_star_rating}
+              </div>
+              <p className="review-comment">{review.review_comment}</p>
+              <div className="review-author">{review.review_author}</div>
+              <div className="review-date">{review.review_date}</div>
+              {review.is_verified_purchase && (
+                <span className="verified-purchase">
+                  {review.is_verified_purchase}
+                </span>
+              )}
+              <a href={review.review_link} className="review-link">
+                Read full review
+              </a>
             </div>
-        </div>
-    ))}
-</div>
-
+          </div>
+        ))}
+      </div>
     </>
   );
 };
