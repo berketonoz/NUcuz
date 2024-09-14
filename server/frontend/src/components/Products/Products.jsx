@@ -8,7 +8,7 @@ const Products = () => {
   const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
 
-  const products_url = "http://localhost:8000/djangoapp/products"; // "http://localhost:8000/djangoapp/load_amazon"; // Adjust the URL if needed
+  const products_url = "http://localhost:8000/djangoapp/products";
 
   const toggle = (e) => {
     let e1 = document.getElementsByClassName("arrow");
