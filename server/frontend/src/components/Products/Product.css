@@ -1,72 +1,105 @@
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background-color: #f4f4f4;
     padding: 20px;
 }
 
-/* Container */
+/* Product Container */
 .product-container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
-    background-color: white;
+    background-color: #fff;
     padding: 20px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Product image */
-.product-image {
-    flex: 1;
-    max-width: 600px;
-    margin-right: 20px;
+/* Product Photo */
+.product-photo {
+    text-align: center;
 }
 
-.product-image img {
-    width: 100%;
+.product-photo img {
+    max-width: 100%;
     border-radius: 8px;
 }
 
-/* Product details */
-.product-details {
-    flex: 1;
-}
-
+/* Product Title */
 .product-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-    color: #333;
-}
-
-.product-price {
     font-size: 24px;
-    color: #e67e22;
-    margin-bottom: 20px;
+    color: #333;
+    margin-bottom: 10px;
 }
 
-.product-description {
-    font-size: 16px;
+/* Brand */
+.product-brand {
+    font-size: 14px;
     color: #555;
-    line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
-.product-specifications {
+/* Product Price */
+.product-price {
+    font-size: 28px;
+    color: #e67e22;
+    margin-bottom: 10px;
+}
+
+.product-original-price {
+    font-size: 18px;
+    color: #999;
+    text-decoration: line-through;
+    margin-left: 10px;
+}
+
+/* Star Rating */
+.product-rating {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.product-rating span {
+    font-size: 20px;
+    color: #555;
+}
+
+.product-rating .rating {
+    font-weight: 600;
+}
+
+.product-rating .stars {
+    color: gold;
     font-size: 16px;
+}
+
+/* Delivery Info */
+.delivery-info {
+    background-color: #e0f7fa;
+    padding: 15px;
+    border-radius: 5px;
+    color: #00796b;
     margin-bottom: 20px;
+    font-size: 14px;
 }
 
-.product-specifications ul {
-    list-style-type: none;
+.delivery-info span {
+    display: block;
 }
 
-.product-specifications ul li {
-    padding: 5px 0;
-    border-bottom: 1px solid #ddd;
-}
-
-.add-to-cart {
+/* Buttons */
+.buy-now {
     display: inline-block;
     background-color: #e67e22;
     color: white;
@@ -77,20 +110,27 @@ body {
     font-weight: bold;
     letter-spacing: 1px;
     transition: background-color 0.3s;
+    text-align: center;
 }
 
-.add-to-cart:hover {
+.buy-now:hover {
     background-color: #d35400;
 }
 
-/* Responsive design */
+/* Prime badge */
+.prime-badge {
+    display: inline-block;
+    background-color: #1476f2;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
 @media (max-width: 768px) {
     .product-container {
-        flex-direction: column;
-    }
-    
-    .product-image {
-        margin-right: 0;
-        margin-bottom: 20px;
+        padding: 10px;
     }
 }
