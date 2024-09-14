@@ -6,18 +6,20 @@ from . import views
 
 APP_NAME = 'djangoapp'
 urlpatterns = [
-    # path for home
-    path(route='load_amazon', view=views.load_amazon_products, name='load_amazon_products'),
-    # path for logout
+    # paths for bulk load
+    path(route='load_products', view=views.load_amazon_products, name='load_amazon_products'),
+    
+    # paths for user operations
     path(route='logout', view=views.logout_request, name='logout'),
-    # path for login
     path(route='login', view=views.login_view, name='login'),
-    # path for register
     path(route='register', view=views.registration, name='register'),
-    # path for products
+
+    # paths for product
     path(route='products', view=views.get_products, name='get_products'),
-    # path for detailed product
     path(route='product/<str:asin>', view=views.get_product, name='get_product'),
+    
+    # path for reviews !(!asin and country needed in request body!)!
+    path(route='reviews', view=views.get_reviews_v2, name='get_reviews'),
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
