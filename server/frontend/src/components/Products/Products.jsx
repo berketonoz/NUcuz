@@ -1,12 +1,29 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./Products.css";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { Box, FormControl } from "@mui/material";
 
 const Products = () => {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productsList, setProductsList] = useState([]);
   const [error, setError] = useState(null);
   const [currencies, setCurrencies] = useState([]);
+  const [currency, setCurrency] = useState([]);
+  
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
 
   const products_url = "http://localhost:8000/djangoapp/products";
 
@@ -32,7 +49,7 @@ const Products = () => {
             );
             console.log(currencies);
             setCurrencies(currencies);
-
+            console.log('products',data.products[0])
             setProductsList(data.products);
             setFilteredProducts(data.products);
           } else {
@@ -63,29 +80,48 @@ const Products = () => {
 
   const isLoggedIn = sessionStorage.getItem("username") !== null;
 
+  const handleChange = (event) => {
+    setCurrency(event.target.value);
+    if(event.target.value !== "") {
+        var productsByCurrency = productsList.filter((item) => item.currency === event.target.value);
+        setFilteredProducts(productsByCurrency);
+    } else {
+        setFilteredProducts(productsList);
+    }
+  };
+
   return (
     <div>
       {error && <div className="error">{error}</div>}
       <div className="container-ver">
-        <div className="container-hor">
-          <div className="filter-container">
-            Filters
-            <div className="filter-item-bar">
-              <div className="filter-item" onClick={(e) => toggle(e)}>
-                Currency
-                <div className="arrow"></div>
-              </div>
-              <div className="filter-currency">
-                {currencies?.length > 0
-                  ? currencies.map((currency, index) => (
-                      <p key={currency} style={{ fontSize: "30px" }}>
-                        {currency}
-                      </p>
-                    ))
-                  : null}
-              </div>
+        <div className="filter-container">
+            <p className="filter-header">Filters</p>
+            <div className="select-input-container">
+                <div className="dropdown-container">
+                <Box sx={{ minWidth: 120 }}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">Currency</InputLabel>
+                        <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={currency}
+                        label="Currency"
+                        onChange={handleChange}
+                        >
+                            <MenuItem key="empty" value="">Seçiniz</MenuItem>  
+                            {currencies.map((c) => {
+                                return (
+                                    <MenuItem key={c} value={c}>{c}</MenuItem>
+                                )
+                            })}
+                            <MenuItem key="usd" value="USD">USD</MenuItem>
+                        </Select>
+                    </FormControl>
+                </Box>
+                 
+                </div>
+                
             </div>
-          </div>
         </div>
         <div className="container-hor">
           <div className="search-container">
