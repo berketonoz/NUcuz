@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Circles } from "react-loader-spinner";
 import "./Product.css";
 import Reviews from "./Reviews";
 
@@ -28,7 +29,22 @@ const Product = () => {
     GetProduct();
   }, [asin]); // Dependency on 'asin' to re-fetch if the parameter changes
 
-  if (loading) return <div>Loading...</div>; // Handle loading state
+  if (loading)
+    return (
+      <div className="product-spinner-container">
+        <div className="circles">
+          <Circles
+            visible={true}
+            height="400"
+            width="400"
+            color="#B0B0B0"
+            ariaLabel="color-ring-loading"
+            wrapperStyle={{}}
+            wrapperClass="color-ring-wrapper"
+          />
+        </div>
+      </div>
+    ); // Handle loading state
 
   return (
     <>
@@ -37,7 +53,9 @@ const Product = () => {
         <div className="product-brand">{product?.product_brand}</div>
         <div className="product-title">{product?.product_title}</div>
         <div className="product-price">{product?.product_price}</div>
-        <div className="product-price">{product?.product_original_price}</div>
+        <div className="product-original-price">
+          {product?.product_original_price}
+        </div>
         <div className="product-rating">
           <div>
             <span className="rating">{product?.product_star_rating} </span>
