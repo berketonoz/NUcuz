@@ -177,8 +177,7 @@ def get_reviews_v2(request):
         endpoint = '/reviews/' + asin
         reviews = get_request(endpoint)
         if reviews:
-            print(reviews)
-            return JsonResponse({'status': 200, 'message': reviews})
+            return JsonResponse({'status': 200, 'data': reviews})
         else:
             url, headers = get_request_details('review_url','amazon')
             url = url.replace('$ASIN', asin).replace('$COUNTRY', country)
@@ -188,7 +187,7 @@ def get_reviews_v2(request):
                     logger.info(f"{len(data)} reviews fetched")
                     endpoint = "/load_reviews"
                     publish_to_bigquery(data,endpoint)
-                    return JsonResponse({'status': 200, 'message': data})
+                    return JsonResponse({'status': 200, 'data': data})
                 return JsonResponse({'status': 404, 'message': 'Not found'})
             except AttributeError as err:    
                 return JsonResponse({'status': 400, 'message': 'AttributeException'})
