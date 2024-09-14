@@ -84,61 +84,65 @@ def registration(request):
     return JsonResponse(data)
 
 
-def get_domain_request_details(domain):
-    return DOMAINS[domain]['url'], DOMAINS[domain]['headers']
+def get_request_details(url,domain):
+    return DOMAINS[domain][url], DOMAINS[domain]['headers']
 
 
-def format_url_with_query(url, query, page, country):
-    return url                      \
-        .replace('$QUERY', query)   \
+def format_product_url(url, query, page, country):
+    return url\
+        .replace('$QUERY', query)\
         .replace('$PAGE', str(page))\
         .replace('$COUNTRY', country)
 
+
+def format_review_url(url, asin, country):
+    return url\
+        .replace('$ASIN', asin)\
+        .replace('$COUNTRY', country)
 
 def handle_api_request(url, headers):
     try:
         response = requests.get(url, headers=headers)
         response.raise_for_status()
-        return response.json().get('data', {}).get('products', [])
+        return response.json().get('data', {})
     except requests.exceptions.RequestException as e:
         logger.error(f"Error fetching data from {url}: {e}")
         return []
 
 
-def fetch_paginated_data(query):
+def fetch_amazon_products(query):
     products = []
     domain = "amazon"
-    template_url, headers = get_domain_request_details(domain)
+    template_url, headers = get_request_details('product_url', domain)
     for tld in DOMAINS[domain]['TLDs']:
         logger.info(f"Fetching {query} products from {domain}.{tld}...")
         page = 1
         
         num_of_products = 0
         while True:
-            formatted_url = format_url_with_query(template_url, query, page, tld)
-            fetched_products = handle_api_request(formatted_url, headers)
+            formatted_url = format_product_url(template_url, query, page, tld)
+            fetched_products = handle_api_request(formatted_url, headers).get('products', [])
 
             if not fetched_products:
                 break
             
             for product in fetched_products:
-                if product['product_title'] and product['product_price'] and product['currency']:
-                    product['country'] = tld
-                    products.append(product)
-
-            logger.debug(f'Page({page}): {len(fetched_products)} products fetched')
+                # if product['product_title'] and product['product_price'] and product['currency']:
+                product['product_brand'] = query
+                product['product_title'] = product['product_title'].replace(query, "").strip()
+                product['country'] = tld
+                products.append(product)
             page += 1
             # For Test purposes (Not to overload bq initially)
             if page == 2:
                 break
             
-    logger.info(f'Total number of products fetched: {len(products)}')
     return products
 
 
-def publish_to_bigquery(data):
+def publish_to_bigquery(data, endpoint):
     try:
-        url = "http://localhost:3030/load_amazon"
+        url = "http://localhost:3030" + endpoint
         headers = {'Content-Type': 'application/json'}
         response = requests.post(url, data=json.dumps(data), headers=headers)
         response.raise_for_status()  # Raises HTTPError for bad responses
@@ -154,13 +158,42 @@ def load_amazon_products(request):
     data = []
 
     for query in queries:
-        data += fetch_paginated_data(query)
+        data += fetch_amazon_products(query)
 
     if data:
-        threading.Thread(target=publish_to_bigquery, args=(data,)).start()
+        logger.info(f"{len(data)} products fetched")
+        endpoint = "/load_products"
+        publish_to_bigquery(data,endpoint)
     else:
         return JsonResponse({'status': 500, 'error': 'Failed to fetch products'})
-    return JsonResponse({'status': 200, 'products': data})
+    return JsonResponse({'status': 200, 'message': 'Products loaded to BigQuery successfully'})
+    
+
+def get_reviews_v2(request):
+    data = []
+    asin = request.GET.get('asin', '')
+    country = request.GET.get('country', '')
+    if asin != '' and country != '':
+        endpoint = '/reviews/' + asin
+        reviews = get_request(endpoint)
+        if reviews:
+            print(reviews)
+            return JsonResponse({'status': 200, 'message': reviews})
+        else:
+            url, headers = get_request_details('review_url','amazon')
+            url = url.replace('$ASIN', asin).replace('$COUNTRY', country)
+            try:
+                data = handle_api_request(url, headers).get('reviews',[])
+                if data:
+                    logger.info(f"{len(data)} reviews fetched")
+                    endpoint = "/load_reviews"
+                    publish_to_bigquery(data,endpoint)
+                    return JsonResponse({'status': 200, 'message': data})
+                return JsonResponse({'status': 404, 'message': 'Not found'})
+            except AttributeError as err:    
+                return JsonResponse({'status': 400, 'message': 'AttributeException'})
+    logger.critical(f"ASIN={asin} // COUNTRY={country}")
+    return JsonResponse({'status': 400, 'message': 'ASIN & COUNTRY Error'})
 
 
 def get_products(request):
