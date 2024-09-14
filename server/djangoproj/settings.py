@@ -132,8 +132,9 @@ STATICFILES_DIRS = [
 # GLOBAL DICTIONARY
 DOMAINS = {
         'amazon': {
-            'TLDs': ['US', 'TR'],  # ['US', 'AU', 'BR', 'CA', 'CN', 'FR', 'DE', 'IN', 'IT', 'MX', 'NL', 'SG', 'ES', 'TR', 'AE', 'GB', 'JP', 'SA', 'PL', 'SE', 'BE', 'EG'],
-            'url': 'https://real-time-amazon-data.p.rapidapi.com/search?query=$QUERY&page=$PAGE&country=$COUNTRY&sort_by=RELEVANCE&product_condition=ALL',
+            'TLDs': ['TR'],  # ['US', 'AU', 'BR', 'CA', 'CN', 'FR', 'DE', 'IN', 'IT', 'MX', 'NL', 'SG', 'ES', 'TR', 'AE', 'GB', 'JP', 'SA', 'PL', 'SE', 'BE', 'EG'],
+            'product_url': 'https://real-time-amazon-data.p.rapidapi.com/search?query=$QUERY&page=$PAGE&country=$COUNTRY&sort_by=RELEVANCE&product_condition=ALL',
+            'review_url': 'https://real-time-amazon-data.p.rapidapi.com/product-reviews?asin=$ASIN&country=$COUNTRY&sort_by=TOP_REVIEWS&star_rating=ALL&verified',
             'headers': {
                 'x-rapidapi-host': 'real-time-amazon-data.p.rapidapi.com',
                 'x-rapidapi-key': '1276d4083bmshf31783a6f78a32dp1b9327jsn5273120b5da9',
