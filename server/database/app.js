@@ -29,8 +29,9 @@ const Products = require("./product");
 //   }
 // });
 
-const expectedAttributes = [
+const productAttributes = [
   "asin",
+  "product_brand",
   "product_title",
   "product_price",
   "product_original_price",
@@ -49,6 +50,21 @@ const expectedAttributes = [
   "delivery",
   "has_variations",
   "country",
+  "product_availability",
+];
+
+const reviewAttributes = [
+  "review_id",
+  "review_title",
+  "review_comment",
+  "review_star_rating",
+  "review_link",
+  "review_author",
+  "review_author_avatar",
+  "review_date",
+  "is_verified_purchase",
+  "helpful_vote_statement",
+  "reviewed_product_asin",
 ];
 
 // Express route to home
@@ -56,17 +72,17 @@ app.get("/", async (req, res) => {
   res.send("Welcome to the Express API");
 });
 
-app.get("/product/:asin", async (req, res) => {  
+app.get("/product/:asin", async (req, res) => {
   const asin = req.params.asin;
-  
+
   let sql =
-      "SELECT * \
-        FROM `codeway-case-study-427613.amazon.products` \
+    "SELECT * \
+        FROM `nucuz-435514.amazon.products` \
         WHERE asin = " + `'${asin}'`;
 
   const options = { query: sql, location: "US" };
   const [response] = await bigqueryClient.query(options);
-  
+
   res.json(response);
 });
 
@@ -78,7 +94,7 @@ app.get("/products", async (req, res) => {
     };
     let sql =
       "SELECT * \
-        FROM `codeway-case-study-427613.amazon.productsV2` \
+        FROM `nucuz-435514.amazon.products` \
         ORDER BY RAND() \
         LIMIT 4";
 
@@ -90,7 +106,7 @@ app.get("/products", async (req, res) => {
       response.products = bqResponse;
       response.status = 200;
     }
-    
+
     res.status(200).json(response);
   } catch (error) {
     console.error("Error fetching documents:", error); // Log the full error
@@ -100,39 +116,61 @@ app.get("/products", async (req, res) => {
   }
 });
 
-app.post("/products", async (req, res) => {
-  try {
-    let sql = "";
-    if (req.body) console.log(req.body);
+app.get("/reviews/:asin", async (req, res) => {
+  const asin = req.params.asin;
 
-    console.log("SQL: ", sql);
+  let sql =
+    "SELECT * \
+    FROM `nucuz-435514.amazon.reviews` \
+    WHERE reviewed_product_asin = " + `'${asin}' \
+    ORDER BY RAND() \
+    LIMIT 5`;
 
-    // const options = { query: sql, location: "US" };
+  const options = { query: sql, location: "US" };
+  const [response] = await bigqueryClient.query(options);
 
-    // const [response] = await bigqueryClient.query(options);
-
-    res.status(200).json(sql);
-  } catch (error) {
-    console.error("Error fetching documents:", error); // Log the full error
-    res
-      .status(500)
-      .json({ error: "Error fetching documents", details: error.message });
-  }
+  res.json(response);
 });
 
 // Endpoint to publish data to Pub/Sub
-app.post("/load_amazon", async (req, res) => {
-  const topicName = "projects/codeway-case-study-427613/topics/amazon";
+app.post("/load_products", async (req, res) => {
+  const topicName = "projects/nucuz-435514/topics/amazon-products";
 
   try {
     const products = req.body;
-    for (const product of products) {  
+    for (const product of products) {
+      Object.keys(product).forEach((k) => {
+        if (!productAttributes.includes(k)) delete product[k];
+      });
       const dataBuffer = Buffer.from(JSON.stringify(product));
       const messageId = await pubSubClient
         .topic(topicName)
         .publishMessage({ data: dataBuffer });
+      console.log(`Message ${messageId} published for product ${product.asin}`);
+    }
+
+    res.status(201).json({ message: "Products published to Pub/Sub" });
+  } catch (error) {
+    console.error("Error publishing to Pub/Sub:", error);
+    res.status(500).json({ error: "Error publishing to Pub/Sub" });
+  }
+});
+
+app.post("/load_reviews", async (req, res) => {
+  const topicName = "projects/nucuz-435514/topics/amazon-reviews";
+
+  try {
+    const reviews = req.body;
+    for (const review of reviews) {
+      Object.keys(review).forEach((k) => {
+        if (!reviewAttributes.includes(k)) delete review[k];
+      });
+      const dataBuffer = Buffer.from(JSON.stringify(review));
+      const messageId = await pubSubClient
+        .topic(topicName)
+        .publishMessage({ data: dataBuffer });
       console.log(
-        `Message ${messageId} published for product ${product.asin}`
+        `Message ${messageId} published for review ${review.review_id}:(${review.reviewed_product_asin})`
       );
     }
 
