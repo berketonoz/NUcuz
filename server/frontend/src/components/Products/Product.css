@@ -22,11 +22,13 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    align-items: center;
 }
 
 /* Product Photo */
 .product-photo {
     text-align: center;
+    width: 50%;
 }
 
 .product-photo img {
@@ -134,3 +136,18 @@ body {
         padding: 10px;
     }
 }
+
+.product-spinner-container {
+    position: relative;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    
+    .circles {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+}
+
+}
+  
