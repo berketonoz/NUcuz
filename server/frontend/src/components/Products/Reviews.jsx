@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Circles } from "react-loader-spinner";
 import "./Reviews.css";
 
 const Reviews = ({ product }) => {
@@ -34,20 +33,7 @@ const Reviews = ({ product }) => {
   }, [product]); // Re-fetch reviews whenever the product changes
 
   if (loading)
-    return (
-      <div className="review-spinner-container">
-        <Circles
-          visible={true}
-          height="200"
-          width="200"
-          color="#B0B0B0"
-          ariaLabel="color-ring-loading"
-          wrapperStyle={{}}
-          wrapperClass="color-ring-wrapper"
-        />
-      </div>
-    );
-  // Display loading state for reviews
+    return <div>Loading reviews...</div>; // Display loading state for reviews
   else console.log(reviews);
 
   return (
