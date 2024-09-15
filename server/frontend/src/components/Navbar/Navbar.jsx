@@ -5,7 +5,7 @@ import "./Navbar.css";
 const Navbar = () => {
   const logout = async (e) => {
     e.preventDefault();
-    let logout_url = window.location.origin + "/djangoapp/logout";
+    let logout_url = "http://localhost:8000/djangoapp/logout"; //window.location.origin + "/djangoapp/logout";
     const res = await fetch(logout_url, {
       method: "GET",
     });
@@ -30,18 +30,32 @@ const Navbar = () => {
   //If the user is logged in, show the username and logout option on home page
   if (curr_user !== null && curr_user !== "") {
     home_page_items = (
-      <div className="input_panel">
-        <text className="username">{sessionStorage.getItem("username")}</text>
-        <a className="nav_item" href="/djangoapp/logout" onClick={logout}>
-          Logout
-        </a>
-      </div>
+      <>
+        <li>
+          <div>
+            Hi,
+            <a href="/profile" rel="noreferrer">
+              {curr_user}
+            </a>
+          </div>
+        </li>
+        <li>
+          <Link to="/login">
+            <a href="/djangoapp/logout" onClick={logout}>
+              Logout
+            </a>
+          </Link>
+        </li>
+      </>
     );
-  }
-  else{
-    home_page_items =  (
-      <div>Login</div>
-    )
+  } else {
+    home_page_items = (
+      <li>
+        <Link to="/login">
+          <div>Login</div>
+        </Link>
+      </li>
+    );
   }
 
   return (
@@ -56,9 +70,7 @@ const Navbar = () => {
         <li>
           <Link to="/products">Products</Link>
         </li>
-        <li>
-          <Link to="/login">{home_page_items}</Link>
-        </li>
+        {home_page_items}
       </ul>
     </nav>
   );
