@@ -26,6 +26,8 @@
   
   .navbar-links li {
     margin-left: 20px;
+    display: flex;
+    align-items: center;
   }
   
   .navbar-links a {
