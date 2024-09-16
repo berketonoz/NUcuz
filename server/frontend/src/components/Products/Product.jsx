@@ -29,7 +29,7 @@ const Product = () => {
     GetProduct();
   }, [asin]); // Dependency on 'asin' to re-fetch if the parameter changes
 
-  if (!loading)
+  if (loading)
     return (
       <div className="product-spinner-container">
         <div className="circles">
