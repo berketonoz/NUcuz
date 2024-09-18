@@ -20,6 +20,9 @@ urlpatterns = [
     
     # path for reviews !(!asin and country needed in request body!)!
     path(route='reviews', view=views.get_reviews_v2, name='get_reviews'),
+    
+    path('accounts/google/login/token/', view=views.google_login_token, name='google-login-token'),
+
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
