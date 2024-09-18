@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { Menu, MenuItem, Button } from "@mui/material";
 import "./Navbar.css";
 
 const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const logout = async (e) => {
     e.preventDefault();
     let logout_url = "http://localhost:8000/djangoapp/logout"; //window.location.origin + "/djangoapp/logout";
@@ -34,29 +36,47 @@ const Navbar = () => {
     home_page_items = (
       <>
         <li>
-          <div>
-            Hi,
-            <a href="/profile" rel="noreferrer">
-              {curr_user}
-            </a>
-          </div>
-        </li>
-        <li>
-          <Link to="/login">
-            <a href="/djangoapp/logout" onClick={logout}>
-              Logout
-            </a>
-          </Link>
+          <Button
+            style={{
+              textTransform: "none",
+              color: "#FFFFFF",
+              fontSize: "17.6px",
+              fontFamily: "Arial, sans-serif",
+            }}
+            onClick={(event) => {
+              setIsOpen(event.currentTarget);
+            }}
+          >
+            {curr_user}
+          </Button>
+          <Menu
+            anchorEl={isOpen}
+            keepMounted
+            open={Boolean(isOpen)}
+            onClose={() => setIsOpen(false)}
+          >
+            <MenuItem>
+              <Link to="/profile">
+                <div>Profile</div>
+              </Link>
+            </MenuItem>
+            <MenuItem>
+              <Link to="/settings">
+                <div>Settings</div>
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={logout}>Logout</MenuItem>
+          </Menu>
         </li>
       </>
     );
   } else {
     home_page_items = (
-      <li>
-        <Link to="/login">
-          <div>Login</div>
-        </Link>
-      </li>
+        <li>
+          <Link to="/login">
+            <div>Login</div>
+          </Link>
+        </li>
     );
   }
 
@@ -67,10 +87,38 @@ const Navbar = () => {
       </div>
       <ul className="navbar-links">
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <Button
+              style={{
+                textTransform: "none",
+                color: "#FFFFFF",
+                fontSize: "17.6px",
+                fontFamily: "Arial, sans-serif",
+              }}
+              onClick={() => {
+                window.location.href = "/";
+              }}
+            >
+              Home
+            </Button>
+          </Link>
         </li>
         <li>
-          <Link to="/products">Products</Link>
+          <Link to="/products">
+            <Button
+              style={{
+                textTransform: "none",
+                color: "#FFFFFF",
+                fontSize: "17.6px",
+                fontFamily: "Arial, sans-serif",
+              }}
+              onClick={() => {
+                window.location.href = "/products";
+              }}
+            >
+              Products
+            </Button>
+          </Link>
         </li>
         {home_page_items}
       </ul>
