@@ -20,7 +20,7 @@ function getCookie(name) {
 }
 
 const Login = ({ onClose }) => {
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(true);
 
@@ -39,14 +39,15 @@ const Login = ({ onClose }) => {
         "X-CSRFToken": csrftoken,
       },
       body: JSON.stringify({
-        userName,
+        username,
         password,
       }),
     });
 
     const json = await res.json();
     if (json.status === "Authenticated") {
-      sessionStorage.setItem("username", json.userName);
+      sessionStorage.setItem("username", json.username);
+      sessionStorage.setItem("screen_name", json.screen_name);
       setOpen(false);
     } else {
       alert("The user could not be authenticated.");
@@ -77,7 +78,7 @@ const Login = ({ onClose }) => {
                   name="username"
                   placeholder="Username"
                   className="input_field"
-                  onChange={(e) => setUserName(e.target.value)}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
               <div>

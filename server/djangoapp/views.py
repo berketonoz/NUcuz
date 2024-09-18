@@ -31,7 +31,7 @@ def login_view(request):
     if request.method == 'POST':
         # Extract username and password from the request
         data = json.loads(request.body)
-        username = data.get('userName')
+        username = data.get('username')
         password = data.get('password')
 
         # Authenticate the user
@@ -40,7 +40,7 @@ def login_view(request):
         if user is not None:
             # Log the user in if authentication is successful
             login(request, user)
-            return JsonResponse({"status": "Authenticated", "userName": user.username})
+            return JsonResponse({"status": "Authenticated", "username": user.username, "screen_name": user.first_name.capitalize()})
         else:
             # If authentication fails
             return JsonResponse({"status": "Failed", "message": "Invalid credentials"}, status=401)
@@ -51,7 +51,7 @@ def login_view(request):
 def logout_request(request):
     """logout_request function for handling /logout route"""
     logout(request)
-    data = {"userName": ""}
+    data = {"username": ""}
     return JsonResponse(data)
 
 
@@ -60,10 +60,10 @@ def registration(request):
     """registration function for handling /register route"""
     # context = {}
     data = json.loads(request.body)
-    username = data['userName']
+    username = data['email']
     password = data['password']
-    first_name = data['firstName']
-    last_name = data['lastName']
+    first_name = data['firstname']
+    last_name = data['lastname']
     email = data['email']
     username_exist = False
     # email_exist = False
@@ -84,10 +84,11 @@ def registration(request):
             password=password,
             email=email)
         # Login the user and redirect to list page
+        user.backend = 'django.contrib.auth.backends.ModelBackend'
         login(request, user)
-        data = {"userName": username, "status": "Authenticated"}
+        data = {"username": username, "screen_name": first_name.capitalize(), "status": "Authenticated"}
     else:
-        data = {"userName": username, "error": "Already Registered"}
+        data = {"username": username, "error": "Already Registered"}
     return JsonResponse(data)
 
 
@@ -253,7 +254,7 @@ def google_login_token(request):
             login(request, user)
             print("User logged in")
 
-            return JsonResponse({'status': 'Authenticated', "userName": user.email})
+            return JsonResponse({'status': 'Authenticated', "username": user.email})
 
         except ValueError as ve:
             print(f"ValueError: {ve}")
