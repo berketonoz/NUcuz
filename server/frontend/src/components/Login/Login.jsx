@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import for Google OAuth
-import {jwtDecode} from "jwt-decode"; // For decoding the Google token (optional, but recommended)
+import { jwtDecode } from "jwt-decode"; // For decoding the Google token (optional, but recommended)
 import "./Login.css";
 
 // Helper function to get the CSRF token from cookies
@@ -53,35 +53,14 @@ const Login = ({ onClose }) => {
     }
   };
 
-  // Google login success handler
-  const handleGoogleLoginSuccess = (response) => {
-    const userObject = jwtDecode(response.credential);
-    console.log("Google User Info:", userObject);
-    // Send token to your Django backend for verification or login
-    // Example:
-    // fetch("/api/google-login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //     "X-CSRFToken": csrftoken,
-    //   },
-    //   body: JSON.stringify({ token: response.credential }),
-    // }).then((response) => {
-    //   // handle response
-    // });
-  };
-
-  const handleGoogleLoginFailure = (error) => {
-    console.error("Google Login Failed:", error);
-    alert("Google login failed. Please try again.");
-  };
-
   if (!open) {
     window.location.href = "/";
   }
 
   return (
-    <GoogleOAuthProvider clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com"> {/* Add GoogleOAuthProvider */}
+    <GoogleOAuthProvider clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com">
+      {" "}
+      {/* Add GoogleOAuthProvider */}
       <div>
         <div onClick={onClose}>
           <div
@@ -128,8 +107,13 @@ const Login = ({ onClose }) => {
             {/* Google Sign-In Button */}
             <div className="google-login">
               <GoogleLogin
-                onSuccess={handleGoogleLoginSuccess}
-                onError={handleGoogleLoginFailure}
+                text="signin_with"
+                onSuccess={() => {
+                  console.log("Success");
+                }}
+                onError={() => {
+                  console.log("Error");
+                }}
               />
             </div>
           </div>

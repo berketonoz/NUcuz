@@ -12,6 +12,13 @@ from .restapis import get_request
 from bs4 import BeautifulSoup
 from pymongo import MongoClient
 
+from google.auth.transport import requests as google_requests
+from google.oauth2 import id_token
+
+
+GOOGLE_CLIENT_ID = '433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com'
+
+
 # Set up logging
 logging.basicConfig(
     level=logging.INFO,  # Set to DEBUG to capture more detailed logs
@@ -207,4 +214,53 @@ def get_product(request, asin):
         product = get_request(endpoint)
         return JsonResponse({'status': 200, 'product': product})
     return JsonResponse({'status': 500, 'error': 'assin error'})
+
+
+@csrf_exempt
+def google_login_token(request):
+    print("GOOGLE_LOGIN_TOKEN Invoked")
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            print(f"Body: {body}")
+            token = body.get('token')
+
+            print("Verifying token")
+            # Verify the token with Google's servers
+            idinfo = id_token.verify_oauth2_token(token, google_requests.Request(), GOOGLE_CLIENT_ID)
+
+            if idinfo['iss'] not in ['accounts.google.com', 'https://accounts.google.com']:
+                raise ValueError('Wrong issuer.')
+
+            # Get user info from the token
+            google_id = idinfo['sub']
+            email = idinfo['email']
+            print(f"Email: {email}")
+            first_name = idinfo.get('given_name', '')
+            print(f"First Name: {first_name}")
+            last_name = idinfo.get('family_name', '')
+            print(f"Last Name: {last_name}")
+
+            # Check if the user already exists
+            user, created = User.objects.get_or_create(
+                email=email,
+                defaults={'username': email, 'first_name': first_name, 'last_name': last_name}
+            )
+            print(f"User: {user}, Created: {created}")
+
+            # Specify the backend and log the user in
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
+            login(request, user)
+            print("User logged in")
+
+            return JsonResponse({'status': 'Authenticated', "userName": user.email})
+
+        except ValueError as ve:
+            print(f"ValueError: {ve}")
+            return JsonResponse({'status': 'Error', 'message': 'Invalid token'}, status=400)
+        except Exception as e:
+            print(f"Exception: {e}")
+            return JsonResponse({'status': 'Error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'Error', 'message': 'Invalid request'}, status=400)
 
