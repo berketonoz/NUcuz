@@ -40,7 +40,8 @@ def login_view(request):
         if user is not None:
             # Log the user in if authentication is successful
             login(request, user)
-            return JsonResponse({"status": "Authenticated", "username": user.username, "screen_name": user.first_name.capitalize()})
+            screen_name = " ".join([name.lower().capitalize() for name in str(user.first_name).split(" ")])
+            return JsonResponse({"status": "Authenticated", "username": user.username, "screen_name": screen_name})
         else:
             # If authentication fails
             return JsonResponse({"status": "Failed", "message": "Invalid credentials"}, status=401)
@@ -253,8 +254,10 @@ def google_login_token(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             login(request, user)
             print("User logged in")
+            
+            screen_name = " ".join([name.lower().capitalize() for name in str(user.first_name).split(" ")])
 
-            return JsonResponse({'status': 'Authenticated', "username": user.email})
+            return JsonResponse({'status': 'Authenticated', "username": user.email, "screen_name": screen_name})
 
         except ValueError as ve:
             print(f"ValueError: {ve}")
