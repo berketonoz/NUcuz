@@ -3,6 +3,7 @@ import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Impor
 import LoginGoogle from "./LoginGoogle";
 import { jwtDecode } from "jwt-decode"; // For decoding the Google token (optional, but recommended)
 import "./Login.css";
+import LoginApple from "./LoginApple";
 
 // Helper function to get the CSRF token from cookies
 function getCookie(name) {
@@ -83,7 +84,7 @@ const Login = ({ onClose }) => {
                 <LoginGoogle />
               </li>
               <li>
-                Test
+                <LoginApple />
               </li>
               <li>
                 Test2
