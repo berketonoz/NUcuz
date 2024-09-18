@@ -85,14 +85,22 @@
     
   }
   
-  .google-login{
+  /* .google-login{
     width: 15em;
     border-radius: 30px;
     overflow: hidden;
-  }
+  } */
 
   .modalContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .other-signin{
+    display: flex;
+  }
+
+  .other-signin li {
+    margin: 0.3em;
   }
