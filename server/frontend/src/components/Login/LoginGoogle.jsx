@@ -1,9 +1,22 @@
 import React from "react";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import for Google OAuth
+// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import for Google OAuth
+import { GoogleLogin } from "react-google-login";
 
 function LoginGoogle() {
   const login_url_google =
     "http://localhost:8000/djangoapp/accounts/google/login/token/"; // Your Django login API URL for Google
+
+  const buttonStyle = {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "50%", // Make it circular
+  };
+
+  const iconStyle = {
+    color: "#DB4437",
+    fontSize: "24px", // Adjust icon size as needed
+  };
 
   const handleGoogleSuccess = (response) => {
     // Send the ID token to your Django backend
@@ -30,18 +43,19 @@ function LoginGoogle() {
         console.error("Error logging in:", error);
       });
   };
-  
+
   return (
-    <GoogleOAuthProvider clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com">
-      <GoogleLogin
-        onSuccess={handleGoogleSuccess}
-        onError={() => {
-          console.log("Error");
-        }}
-        type="icon"
-        shape="circle"
-      />
-    </GoogleOAuthProvider>
+    <GoogleLogin
+      clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com" // Replace with your actual Client ID
+      onSuccess={handleGoogleSuccess}
+      onFailure={() => console.log("error")}
+      cookiePolicy={"single_host_origin"}
+      render={(props) => (
+        <button {...props} style={buttonStyle}>
+          <i className="fab fa-google" style={iconStyle} />
+        </button>
+      )}
+    />
   );
 }
 
