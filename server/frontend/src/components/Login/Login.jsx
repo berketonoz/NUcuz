@@ -4,6 +4,7 @@ import LoginGoogle from "./LoginGoogle";
 import { jwtDecode } from "jwt-decode"; // For decoding the Google token (optional, but recommended)
 import "./Login.css";
 import LoginApple from "./LoginApple";
+import LoginFacebook from "./LoginFacebook";
 
 // Helper function to get the CSRF token from cookies
 function getCookie(name) {
@@ -87,7 +88,7 @@ const Login = ({ onClose }) => {
                 <LoginApple />
               </li>
               <li>
-                Test2
+                <LoginFacebook />
               </li>
             </ul>
           </div>

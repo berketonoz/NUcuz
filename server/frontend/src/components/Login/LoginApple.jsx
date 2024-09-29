@@ -1,16 +1,11 @@
 import React from "react";
 import AppleSignin from "react-apple-signin-auth";
+import AppleLogo from "../assets/apple-logo.svg";
+import "./Login.css";
 
 const AppleLogin = () => {
-  const buttonStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%", // Make it circular
-  };
-
   const iconStyle = {
-    fontSize: "24px", // Adjust icon size as needed
+    transform: "translate(-1px,-1.5px)",
   };
 
   const handleSuccess = (response) => {
@@ -32,8 +27,8 @@ const AppleLogin = () => {
           usePopup: true, // Open sign-in in a popup
         }}
         render={(props) => (
-          <button {...props} style={buttonStyle} className="apple-login-button">
-            <i className="fab fa-apple" style={iconStyle} />
+          <button {...props}>
+            <img src={AppleLogo} alt="Apple Logo" style={iconStyle} />
           </button>
         )}
         onSuccess={handleSuccess}

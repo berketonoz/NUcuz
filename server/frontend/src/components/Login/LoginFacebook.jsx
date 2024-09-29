@@ -1,18 +1,8 @@
 import React from "react";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
+import FacebookLogo from "../assets/facebook-logo.svg";
 
 const FacebookLoginComponent = () => {
-  const buttonStyle = {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%", // Make it circular
-  };
-
-  const iconStyle = {
-    fontSize: "24px", // Adjust icon size as needed
-  };
-
   const responseFacebook = (response) => {
     console.log(response);
   };
@@ -25,8 +15,11 @@ const FacebookLoginComponent = () => {
         callback={responseFacebook}
         fields="name,email,picture"
         render={(props) => (
-          <button {...props} style={buttonStyle}>
-            <i className="fab fa-facebook" style={iconStyle} />
+          <button {...props}>
+            <img
+              src={FacebookLogo}
+              alt="Facebook Logo"
+            />
           </button>
         )}
       />
