@@ -54,6 +54,7 @@
 
 .search-container {
   display: flex;
+  width: -webkit-fill-available;
   justify-content: center;
   margin: 5px;
 }
@@ -102,6 +103,7 @@
 }
 
 .container-hor {
+  width: -webkit-fill-available;
   display: flex;
   flex-direction: column;
 }
@@ -117,9 +119,10 @@
 
 .filter-container {
   background-color: #f9f9f9;
+  width: min-content;
 
   .filter-header {
-    font-size:16px;
+    font-size: 16px;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     /* text-decoration: underline; */
     color: #5c5e5e;
