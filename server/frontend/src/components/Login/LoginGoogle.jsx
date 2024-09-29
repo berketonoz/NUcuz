@@ -1,5 +1,7 @@
 import React from "react";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import for Google OAuth
+// import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import for Google OAuth
+import { GoogleLogin } from "react-google-login";
+import GoogleLogo from "../assets/google-logo.svg";
 
 function LoginGoogle() {
   const login_url_google =
@@ -30,18 +32,23 @@ function LoginGoogle() {
         console.error("Error logging in:", error);
       });
   };
-  
+
   return (
-    <GoogleOAuthProvider clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com">
-      <GoogleLogin
-        onSuccess={handleGoogleSuccess}
-        onError={() => {
-          console.log("Error");
-        }}
-        type="icon"
-        shape="circle"
-      />
-    </GoogleOAuthProvider>
+    <GoogleLogin
+      clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com" // Replace with your actual Client ID
+      onSuccess={handleGoogleSuccess}
+      onFailure={() => console.log("error")}
+      cookiePolicy={"single_host_origin"}
+      render={(props) => (
+        <button {...props}>
+          <img
+              src={GoogleLogo}
+              alt="Google Logo"
+            />
+          {/* <i className="fab fa-google" style={iconStyle} /> */}
+        </button>
+      )}
+    />
   );
 }
 
