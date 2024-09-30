@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google"; // Import for Google OAuth
-import LoginGoogle from "./LoginGoogle";
-import { jwtDecode } from "jwt-decode"; // For decoding the Google token (optional, but recommended)
+import { Modal, Button, Form, Row, Col } from "react-bootstrap";
 import "./Login.css";
 import LoginApple from "./LoginApple";
 import LoginFacebook from "./LoginFacebook";
+import LoginGoogle from "./LoginGoogle";
+import LoginTwitter from "./LoginTwitter";
 
 // Helper function to get the CSRF token from cookies
 function getCookie(name) {
@@ -22,12 +22,13 @@ function getCookie(name) {
   return cookieValue;
 }
 
-const Login = ({ onClose }) => {
+const Login = ({ show, onClose }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [open, setOpen] = useState(true);
 
   const login_url = "http://localhost:8000/djangoapp/login"; // Your Django login API URL
+  console.log("Login invoked");
 
   // Traditional login handler
   const login = async (e) => {
@@ -60,40 +61,82 @@ const Login = ({ onClose }) => {
   }
 
   return (
-      <div>
-        <div onClick={onClose}>
-          <div onClick={(e) => { e.stopPropagation(); }} className="modalContainer">
-            <form className="login_panel" style={{}} onSubmit={login}>
-              <div>
-                <span className="input_field">Username</span>
-                <input type="text" name="username" placeholder="Username" className="input_field" onChange={(e) => setUsername(e.target.value)}/>
-              </div>
-              <div>
-                <span className="input_field">Password</span>
-                <input name="psw" type="password" placeholder="Password" className="input_field" onChange={(e) => setPassword(e.target.value)}/>
-              </div>
-              <div>
-                <input className="action_button" type="submit" value="Login" />
-                <input className="action_button" type="button" value="Cancel" onClick={() => setOpen(false)}/>
-              </div>
-              <a className="loginlink" href="/register">Register Now</a>
-            </form>
-              
-            {/* Google Sign-In Button */}
-            <ul className="other-signin">
-              <li>
-                <LoginGoogle />
-              </li>
-              <li>
-                <LoginApple />
-              </li>
-              <li>
-                <LoginFacebook />
-              </li>
-            </ul>
+    <Modal show={show} onHide={onClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Login</Modal.Title>
+      </Modal.Header>
+
+      <Modal.Body>
+        <Form onSubmit={login}>
+          <Form.Group controlId="username">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group controlId="password" className="mt-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
+
+          <Row className="mt-4">
+            <Col>
+              <Button variant="primary" type="submit" className="w-100">
+                Login
+              </Button>
+            </Col>
+            <Col>
+              <Button variant="secondary" className="w-100" onClick={onClose}>
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+
+          <div className="text-center mt-3">
+            <a href="/register">Register Now</a>
           </div>
+        </Form>
+
+        <div className="mt-4">
+          <p className="text-center">Or sign in with:</p>
+          <Row className="justify-content-center">
+            <Col md={{ span: 2 }} sm={{ span: 2 }} xs={{ span: 2 }}>
+              <LoginGoogle />
+            </Col>
+            <Col
+              xs={{ span: 2, offset: 1 }}
+              sm={{ span: 2, offset: 1 }}
+              md={{ span: 2, offset: 1 }}
+            >
+              <LoginApple />
+            </Col>
+            <Col
+              xs={{ span: 2, offset: 1 }}
+              sm={{ span: 2, offset: 1 }}
+              md={{ span: 2, offset: 1 }}
+            >
+              <LoginFacebook />
+            </Col>
+            <Col
+              xs={{ span: 2, offset: 1 }}
+              sm={{ span: 2, offset: 1 }}
+              md={{ span: 2, offset: 1 }}
+            >
+              <LoginTwitter />
+            </Col>
+          </Row>
         </div>
-      </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 
