@@ -1,10 +1,19 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, MenuItem, Button } from "@mui/material";
+import Login from "../Login/Login";
 import "./Navbar.css";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const loginStyle = {
+    textTransform: "none",
+    color: "rgb(255, 255, 255)",
+    fontSize: "17.6px",
+    fontFamily: "Arial, sans-serif",
+  }
+
   const logout = async (e) => {
     e.preventDefault();
     let logout_url = "http://localhost:8000/djangoapp/logout"; //window.location.origin + "/djangoapp/logout";
@@ -72,11 +81,9 @@ const Navbar = () => {
     );
   } else {
     home_page_items = (
-        <li>
-          <Link to="/login">
-            <div>Login</div>
-          </Link>
-        </li>
+      <li>
+        <Button style={loginStyle} variant="link" onClick={() => setShowLogin(true)}>Login</Button>
+      </li>
     );
   }
 
@@ -122,6 +129,9 @@ const Navbar = () => {
         </li>
         {home_page_items}
       </ul>
+      {showLogin && (<>
+        <Login show={showLogin} onClose={setShowLogin}/>
+      </>)}
     </nav>
   );
 };
