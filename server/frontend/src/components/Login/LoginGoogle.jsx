@@ -34,21 +34,17 @@ function LoginGoogle() {
   };
 
   return (
-    <GoogleLogin
-      clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com" // Replace with your actual Client ID
-      onSuccess={handleGoogleSuccess}
-      onFailure={() => console.log("error")}
-      cookiePolicy={"single_host_origin"}
-      render={(props) => (
-        <button {...props}>
-          <img
-              src={GoogleLogo}
-              alt="Google Logo"
-            />
-          {/* <i className="fab fa-google" style={iconStyle} /> */}
+    // <GoogleLogin
+    //   clientId="433919242072-1tlg6pcbsdcolj0l6b236m9o36abj8lg.apps.googleusercontent.com" // Replace with your actual Client ID
+    //   onSuccess={handleGoogleSuccess}
+    //   onFailure={() => console.log("error")}
+    //   cookiePolicy={"single_host_origin"}
+    //   render={(props) => (
+        <button>
+          <img src={GoogleLogo} alt="Google Logo" />
         </button>
-      )}
-    />
+    //   )}
+    // />
   );
 }
 

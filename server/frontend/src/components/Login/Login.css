@@ -121,3 +121,21 @@
     transform: translate(0px, -2px);
     cursor: pointer;
   }
+
+
+
+
+/* Hide the default TwitterLogin UI */
+.custom-twitter-button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* Ensure default elements are hidden */
+.twitter-login-wrapper * {
+  display: none !important; /* Hide any default rendered elements */
+}
+
