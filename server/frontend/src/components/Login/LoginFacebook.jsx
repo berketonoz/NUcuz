@@ -8,22 +8,20 @@ const FacebookLoginComponent = () => {
   };
 
   return (
-    <div>
-      <FacebookLogin
-        appId="YOUR_FACEBOOK_APP_ID" // Replace with your Facebook App ID
-        autoLoad={false}
-        callback={responseFacebook}
-        fields="name,email,picture"
-        render={(props) => (
-          <button {...props}>
+      // <FacebookLogin
+      //   appId="YOUR_FACEBOOK_APP_ID" // Replace with your Facebook App ID
+      //   autoLoad={false}
+      //   callback={responseFacebook}
+      //   fields="name,email,picture"
+      //   render={(props) => (
+          <button>
             <img
               src={FacebookLogo}
               alt="Facebook Logo"
             />
           </button>
-        )}
-      />
-    </div>
+      //   )}
+      // />
   );
 };
 
